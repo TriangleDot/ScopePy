@@ -1,0 +1,151 @@
+
+ghost_plot{
+    name: Ghost plot;
+    plot-background-color: #000000;
+    grid-color: #00ff00;
+    axis-color: #646464;
+    axis-label-color: #848484;
+    axis-title-color:#848484;
+    axis-limits-color: #848484;
+    axis-limits-background:#505050;
+    horiz-marker-color: #88a02f;
+    vert-marker-color: #18a02f;
+    border-color: #002121;
+    border-grid:1;
+    border-grid-color: #aa0000;
+    legend-outlineColor:#b1b1b1;
+    legend-outlineWidth: 2;
+    legend-outlineMargin: 5;
+    legend-cellBorderColor:#1e1e1e;
+    legend-cellBackgroundColor:#1e1e1e;
+    legend-cellBorderWidth: 1;
+    legend-backgroundColor: #0a0a0a;
+    legend-textColor: #a4a4a4;
+    legend-fontsize: 8;
+}
+
+
+deep_plot{
+    name: Deep plot;
+    plot-background-color: #000000;
+    grid-color: #00ff00;
+    axis-color: #646464;
+    axis-label-color: #848484;
+    axis-title-color:#848484;
+    axis-limits-color: #848484;
+    axis-limits-background:#505050;
+    horiz-marker-color: #88a02f;
+    vert-marker-color: #18a02f;
+    border-color: #212121;
+    border-grid:1;
+    border-grid-color: #aa0000;
+    legend-outlineColor:#b1b1b1;
+    legend-outlineWidth: 2;
+    legend-outlineMargin: 5;
+    legend-cellBorderColor:#1e1e1e;
+    legend-cellBackgroundColor:#000000;
+    legend-cellBorderWidth: 1;
+    legend-backgroundColor: #212121;
+    legend-textColor: #848484;
+    legend-fontsize: 8;
+}
+
+white1{
+    name: Whiteish plot;
+    plot-background-color: #ffffc1;
+    grid-color: #353535;
+    axis-color: #000000;
+    axis-label-color: #878787;
+    axis-title-color:#878787;
+    axis-limits-color: #848484;
+    axis-limits-background:#505050;
+    horiz-marker-color: #88a02f;
+    vert-marker-color: #18a02f;
+    border-color: #000000;
+    border-grid:1;
+    border-grid-color: #000000;
+    legend-outlineColor:#363636;
+    legend-outlineWidth: 2;
+    legend-outlineMargin: 5;
+    legend-cellBorderColor:#ffffc1;
+    legend-cellBackgroundColor:#ffffc1;
+    legend-cellBorderWidth: 1;
+    legend-backgroundColor: #ffffc1;
+    legend-textColor: #040404;
+    legend-fontsize: 8;
+}
+
+white2{
+    name: Clean plot;
+    plot-background-color: #949494;
+    grid-color: #000000;
+    axis-color: #000000;
+    axis-label-color: #000000;
+    axis-title-color:#000000;
+    axis-limits-color: #000000;
+    axis-limits-background:#a4a4a4;
+    horiz-marker-color: #88a02f;
+    vert-marker-color: #18a02f;
+    border-color: #ffffff;
+    border-grid:1;
+    border-grid-color: #000000;
+    legend-outlineColor:#000000;
+    legend-outlineWidth: 2;
+    legend-outlineMargin: 5;
+    legend-cellBorderColor:#a4a4a4;
+    legend-cellBackgroundColor:#a4a4a4;
+    legend-cellBorderWidth: 1;
+    legend-backgroundColor: #a4a4a4;
+    legend-textColor: #000000;
+    legend-fontsize: 8;
+}
+white3{
+    name: Paper plot;
+    plot-background-color: #ffffff;
+    grid-color: #000000;
+    axis-color: #000000;
+    axis-label-color: #000000;
+    axis-title-color:#000000;
+    axis-limits-color: #000000;
+    axis-limits-background:#ffffff;
+    horiz-marker-color: #88a02f;
+    vert-marker-color: #18a02f;
+    border-color: #ffffff;
+    border-grid:1;
+    border-grid-color: #000000;
+    legend-outlineColor:#000000;
+    legend-outlineWidth: 2;
+    legend-outlineMargin: 5;
+    legend-cellBorderColor:#ffffff;
+    legend-cellBackgroundColor:#ffffff;
+    legend-cellBorderWidth: 1;
+    legend-backgroundColor: #ffffff;
+    legend-textColor: #000000;
+    legend-fontsize: 8;
+}
+
+christmas{
+    name: Santa plot;
+    plot-background-color: #009900;
+    grid-color: #d23700;
+    axis-color: #d23700;
+    axis-label-color: #530d00;
+    axis-title-color:#530d00;
+    axis-limits-color: #530d00;
+    axis-limits-background:#53c100;
+    horiz-marker-color: #88a02f;
+    vert-marker-color: #18a02f;
+    border-color: #d01700;
+    border-grid:1;
+    border-grid-color: #000000;
+    legend-outlineColor:#b1b1b1;
+    legend-outlineWidth: 2;
+    legend-outlineMargin: 5;
+    legend-cellBorderColor:#1e1e1e;
+    legend-cellBackgroundColor:#1e1e1e;
+    legend-cellBorderWidth: 1;
+    legend-backgroundColor: #0a0a0a;
+    legend-textColor: #a4a4a4;
+    legend-fontsize: 8;
+}
+

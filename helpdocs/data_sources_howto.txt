@@ -1,0 +1,124 @@
+title : Data sources HOWTO
+
+%*% ScopePy Data sources: Code architecture
+
+++<
+Data sources are modules located in the data_sources folder or any other folder that has been specified in the ScopePy paths. The modules contain three main classes, a creator, a DataSourceNode and a TableWrapper. The diagram below shows where each of these classes is used.
+>++
+
+<svg width="400" height="400">
+    <marker id="triangle"
+      viewBox="0 0 10 10" refX="0" refY="5" 
+      markerUnits="strokeWidth"
+      markerWidth="5" markerHeight="5"
+      orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" />
+    </marker>
+  <!-- Boundary rectangle -->
+  <rect width="400" height="400" style="fill:rgb(0,0,0);stroke-width:3;stroke:#ffa02f" />
+
+  <!-- Module outline rectangle -->
+  <rect x="15" y="15" width="190" height="360" stroke=#626262 stroke-width="1" fill=#000000 />
+  <text x="20" y="30" fill=#666666>Source module</text>
+
+  <!-- Creator rectangle -->
+  <rect x="35" y="50" width="100" height="60" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="50" y="70" fill=#ffa02f>Creator</text>
+  
+  <!-- DataSourceNode rectangle -->
+  <rect x="35" y="140" width="150" height="100" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="50" y="170" fill=#ffa02f>DataSourceNode</text>
+  
+  <!-- Table wrapper rectangle -->
+  <rect x="35" y="270" width="110" height="60" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="45" y="300" fill=#ffa02f>Table wrapper</text>
+
+  <!-- API rectangle -->
+  <rect x="285" y="50" width="100" height="60" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="300" y="70" fill=#ffa02f>API</text>
+
+  <!-- Data Source selector rectangle -->
+  <rect x="240" y="140" width="150" height="100" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="255" y="160" fill=#ffa02f>Data Source selector</text>
+
+  <!-- Tree model rectangle -->
+  <rect x="240" y="180" width="100" height="60" stroke=#ffa02f stroke-width="2" fill=#525252 />
+  <text x="255" y="200" fill=#ffa02f>Tree model</text>
+
+   <!-- Table Editor rectangle -->
+  <rect x="285" y="270" width="100" height="60" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="300" y="300" fill=#ffa02f>Table Editor</text>
+
+     <!-- Lines -->
+     <!-- ========================================================= -->
+  <!-- Creator -> API -->
+  <line x1="135" y1="80" x2="285" y2="80" marker-end="url(#triangle)" style="stroke:#ffa02f;stroke-width:2" />
+
+  <!-- Table wrapper -> Table editor -->
+  <line x1="145" y1="300" x2="285" y2="300" marker-end="url(#triangle)" style="stroke:#ffa02f;stroke-width:2" />
+
+  <!-- DataSourceNode -> Tree model -->
+  <line x1="185" y1="210" x2="240" y2="210" marker-end="url(#triangle)" style="stroke:#ffa02f;stroke-width:2" />
+
+  <!-- DataSourceNode -> Table wrapper -->
+  <line x1="90" y1="240" x2="90" y2="270" marker-end="url(#triangle)" style="stroke:#ffa02f;stroke-width:2" />
+
+  <!-- API ->  DataSourceNode -->
+  <line x1="285" y1="80" x2="185" y2="140" marker-end="url(#triangle)" style="stroke:#ffa02f;stroke-width:2" />
+
+</svg>
+
+++<
+Data source creator classes are loaded into the API when ScopePy starts. When a new data source is created, either from a file or programmatically, the API will check to see if it has the correct creator for the data source. When it has selected the correct creator the API runs either the toNode() or makeSource() function of the creator class object. This will create a DataSourceNode which is used by the Data source selector panel to display the source in a tree view. Some DataSourceNodes can have their source data displayed as a table. In this case the module should include a table wrapper class for interfacing to the Table editor panel.
+>++
+
+%*% DataSourceNode
+
+++<
+Data source modules should include a customised version of the DataSourceNode() class. This class is found in the data_source_base_library.py file. DataSourceNodes are a tree style data structure designed to represent data sources in a tree view in the Data source selector panel. Typically there will be more than one node class in a data source module. Usually a 'root' node plus several others. For example an Excel spreadsheet could be represented by a node for the file with sub nodes for each of the sheets in the file. All nodes for a particular data source should be included in the same module.
+>++
+
+%*% Creator
+
+++<
+Data source creator classes serve one main purpose, to create DataSourceNodes(). They should contain a toNode() function if the data source is a file or a makeSource() function for creating DataSourceNodes programmatically.
+>++
+
+%*% Table Wrapper
+
+++<
+Some DataSourceNodes contain actual tabular data. These nodes should be viewable in the Table Editor panel. The TableWrapper class is there to provide a consistent interface between a DataSourceNode and the Table Editor. The Table Editor expects to be given a Table Wrapper class that has the same functions regardless of the type of data. The Table Editor can be used to create channels from the data.
+>++
+
+%*% Where in the code is this stuff?
+
+++<
+The base DataSourceNode is located in "data_source_base_library.py". The DataSourceNode() class in this module can be used to create other data sources by inheriting from it. An example is shown below:
+>++
+--(
+import data_sources.data_source_base_library as DS<br>
+<br>
+class DMY_File(DS.DatasourceNode):<br>
+    
+    def __init__(self, name, parent=None):<br>
+<br>
+        # Make name field just the filename<br>
+        path, filename = os.path.split(name)<br>
+<br>
+        super(DMY_File, self).__init__(filename, parent)<br>
+        self.isSource = True<br>
+        self._icon_name = DMY_icons[self.typeInfo()]<br>
+<br>        
+        # Link to file<br>
+        self.isFile = True<br>
+        self.sourceFile = name<br>
+<br>                
+        self.setName(filename)<br>
+)--
+
+++<
+There are also base classes for the creator, DatasourceCreator() , and the table wrapper, BaseDatasetTableWrapper, in "data_source_base_library.py". These classes are not functional on their own. They are designed to be inherited and customised. They contain blank versions of the all the required functions.
+>++
+
+
+ 

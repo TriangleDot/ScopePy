@@ -1,0 +1,212 @@
+
+Pyeditor::themes{
+    keywords:#ff0000;
+    builtins:#ffff00;
+    comments:#ff00ff;
+    strings:#9700ff;
+}
+QAbstractItemView{
+    ::::: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #4d4d4d, stop: 0.1 #646464, stop: 1 #5d5d5d);
+}
+QCheckBox::indicator{
+    ::::: 9px;
+}
+QCheckBox::indicator:checked{
+    :::::url(:/images/checkbox.png);
+}
+QCheckBox::indicator:disabled, QRadioButton::indicator:disabled{
+    ::::: 1px solid #444;
+}
+QCheckBox:disabled{
+    ::::: #414141;
+}
+QComboBox{
+    ::::: 5;
+}
+QComboBox QAbstractItemView{
+    ::::: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+}
+QComboBox::down-arrow{
+    ::::: url(:/images/down_arrow.png);
+}
+QComboBox::drop-down{
+    ::::: 3px;
+}
+QComboBox:hover,QPushButton:hover{
+    ::::: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+}
+QComboBox:on{
+    ::::: #ffaa00;
+}
+QDockWidget::close-button, QDockWidget::float-button{
+    ::::: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #323232, stop: 0.5 #242424, stop:1 #323232);
+}
+QDockWidget::close-button:hover, QDockWidget::float-button:hover{
+    ::::: #242424;
+}
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed{
+    ::::: 1px -1px -1px 1px;
+}
+QDockWidget::title{
+    ::::: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #323232, stop: 0.5 #242424, stop:1 #323232);
+}
+QGroupBox:focus{
+    ::::: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+}
+QHeaderView::section{
+    ::::: 1px solid #6c6c6c;
+}
+QLineEdit{
+    ::::: 12px;
+}
+QMainWindow{
+    :::: : : : ;
+}
+QMainWindow::separator{
+    ::::: 3px;
+}
+QMainWindow::separator:hover{
+    ::::: 3px;
+}
+QMdiSubWindow{
+    ::::: #323232;
+}
+QMdiSubWindow:focus {
+    ::::: #8E5D23;
+}
+QMenu{
+    ::::: 1px solid #000;
+}
+QMenu::item{
+    :::::QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #4d4d4d, stop: 0.1 #646464, stop: 1 #5d5d5d);
+}
+QMenu::item:selected{
+    ::::: #000000;
+}
+QMenu::separator{
+    ::::: 5px;
+}
+QMenuBar::item{
+    ::::: transparent;
+}
+QMenuBar::item:pressed{
+    :::::1px;
+}
+QMenuBar::item:selected{
+    ::::: 1px solid #ffaa00;
+}
+QPlainTextEdit{
+    ::::: #242424;
+}
+QProgressBar{
+    ::::: center;
+}
+QProgressBar::chunk{
+    ::::: 0.5px;
+}
+QPushButton{
+    ::::: 15px;
+}
+QPushButton:pressed{
+    ::::: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);
+}
+QRadioButton::indicator{
+    ::::: 6px;
+}
+QRadioButton::indicator:checked{
+    ::::: : : : : : : : :s:t:o:p;
+}
+QRadioButton::indicator:checked, QRadioButton::indicator:unchecked{
+    ::::: 6px;
+}
+QRadioButton::indicator:hover, QCheckBox::indicator:hover{
+    ::::: 1px solid #ffaa00;
+}
+QScrollBar::add-line:horizontal {
+    ::::: margin;
+}
+QScrollBar::add-line:vertical{
+    ::::: margin;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal{
+    ::::: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical{
+    ::::: none;
+}
+QScrollBar::handle:horizontal{
+    ::::: 2px;
+}
+QScrollBar::handle:vertical{
+    ::::: 2px;
+}
+QScrollBar::right-arrow:horizontal, QScrollBar::left-arrow:horizontal{
+    ::::: #b1b1b1;
+}
+QScrollBar::sub-line:horizontal {
+    ::::: margin;
+}
+QScrollBar::sub-line:vertical{
+    ::::: margin;
+}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical{
+    ::::: #b1b1b1;
+}
+QScrollBar:horizontal {
+    ::::: 0px 16px 0 16px;
+}
+QScrollBar:vertical{
+    ::::: 1px solid #222222;
+}
+QTabBar::tab {
+    ::::: -1px;
+}
+QTabBar::tab:!selected{
+    ::::: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:1 #242424, stop:.4 #343434);
+}
+QTabBar::tab:!selected:hover{
+    ::::: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:1 #212121, stop:0.4 #343434, stop:0.2 #343434, stop:0.1 #ffaa00);
+}
+QTabBar::tab:first:!selected{
+    ::::: 3px;
+}
+QTabBar::tab:last{
+    ::::: 3px;
+}
+QTabBar::tab:selected{
+    ::::: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:1 #444444, stop:.4 #666666);
+}
+QTabWidget::pane {
+    ::::: 1px;
+}
+QTextEdit{
+    ::::: #242424;
+}
+QTextEdit:focus{
+    ::::: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+}
+QToolBar::handle{
+    ::::: url(:/images/handle.png);
+}
+QToolTip{
+    ::::: 100;
+}
+QWidget{
+    ::::: #323232;
+}
+QWidget:disabled{
+    ::::: #323232;
+}
+QWidget:focus{
+    :::: : : : ;
+}
+QWidget:item:hover{
+    ::::: #000000;
+}
+QWidget:item:selected{
+    ::::: #000000;
+}
+
+standard_plot{
+   name: Deep plot;
+}

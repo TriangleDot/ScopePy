@@ -1,0 +1,64 @@
+title : ScopePy developers guide 
+
+%*% ScopePy Architecture
+
+
+<svg width="400" height="400">
+  <!-- Boundary rectangle -->
+  <rect width="400" height="400" style="fill:rgb(0,0,0);stroke-width:3;stroke:#ffa02f" />
+  <!-- API rectangle -->
+  <rect x="150" y="50" width="100" height="200" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="185" y="80" fill=#ffa02f>API</text>
+  <!-- GUI rectangle -->
+  <rect x="15" y="55" width="60" height="40" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="25" y="80" fill=#ffa02f>GUI</text>
+  <line x1="75" y1="75" x2="150" y2="75" style="stroke:#ffa02f;stroke-width:2" />
+  <!-- Panel 1 rectangle -->
+  <rect x="320" y="55" width="70" height="40" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="330" y="80" fill=#ffa02f>Panel 1</text>
+  <line x1="250" y1="75" x2="320" y2="75" style="stroke:#ffa02f;stroke-width:2" />
+  <!-- Panel N rectangle -->
+  <rect x="320" y="210" width="70" height="40" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="330" y="235" fill=#ffa02f>Panel N</text>
+  <line x1="250" y1="230" x2="320" y2="230" style="stroke:#ffa02f;stroke-width:2" />
+  <!-- Dashed line from Panel 1 to Panel N -->
+  <!-- Can't get dashed lines to work!!! -->
+  <!-- Dashes work on raspberry pi! -->
+  <line x1="355" y1="95" x2="355" y2="210" stroke=#525252 stroke-width="1" stroke-dasharray="10,10" />
+  <!-- DataStore rectangle -->
+  <rect x="150" y="260" width="100" height="50" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="170" y="280" fill=#ffa02f>DataStore</text>
+  <line x1="200" y1="260" x2="200" y2="250" style="stroke:#ffa02f;stroke-width:2" />
+  <!-- Channels rectangle -->
+  <rect x="220" y="320" width="100" height="30" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="230" y="340" fill=#ffa02f>channels</text>
+  <!-- Data sources rectangle -->
+  <rect x="220" y="360" width="100" height="30" stroke=#ffa02f stroke-width="2" fill=#323232 />
+  <text x="230" y="380" fill=#ffa02f>data sources</text>
+  <!-- Connecting line from DataStore -->
+  <polyline points="200,310 200,375 220,375" style="stroke:#ffa02f;stroke-width:2" />
+  <line x1="200" y1="335" x2="220" y2="335" style="stroke:#ffa02f;stroke-width:2" />
+</svg>
+
+
+++<
+At the heart of ScopePy is the Application Programming Interface (API). This provides a framework for communicating between the various parts of ScopePy. The other main parts are the Graphical User Interface (GUI) and the Panels. The API can be accessed by the panels so that they can use its functions and access global data, such as channels and data sources. The GUI is generally only accessed through the API.
+>++
+
+%*% Application Programming Interface (API)
+
+++<
+API description goes here
+>++
+
+%*% Panels
+
+++<
+Panel description goes here
+>++
+
+%*% Graphical User Interface (GUI)
+
+++<
+GUI description goes here
+>++

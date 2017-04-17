@@ -1,0 +1,155 @@
+title : Basic Panel making tutorial
+<svg width="120" height="100">
+<rect x="20" y="0" width="100" height="100" stroke=#ffa02f stroke-width="2" fill=#207700 />
+  <text x="20" y="70" font-size="80" fill=#000000>Qt</text>
+ <text x="0" y="70" font-size="80" fill=#207700 stroke=#ffa02f>S</text>
+ <text x="40" y="100" font-size="25" fill=#207700 stroke=#ffa02f>imple</text>
+</svg>
+%*% What is a panel?
+++<
+For a basic ScopePy panel, you need a class that inherits from ScopePy_panels.PanelBase. In this tutorial, we will be using a simpler version on PanelBase called simpleQt (sqt) .SimpleBase. Each panel is a class that sets up all the connections to widgets (items like button, that get put on a window) and creates a GUI interface for doing what ever you want.
+>++
+
+%*% Making a panel : Imports
+
+++<
+Making a simple panel isn't hard. The first step is to import simpleQt (SimpleBase and frames) , ScopePy_panels (PanelFlags) and GUI library PyQt4.QtGui. simpleQt will be imported as sqt, and PyQt4.QtGui as * (you don't need to type anything in to use its widgets) This is an example:
+--(
+import simpleQt as sqt<br>
+import ScopePy_panels<br>
+from PyQt4.QtGui import *<br>
+)--
+>++
+
+%*% Making a panel: 
+<svg width="300" height="300">
+<!-- Window -->
+
+<rect x="0" y="0" width="300" height="300" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="20" y="20" font-size="15" fill=#ffa02f>sqt.SimpleBase</text>
+<!-- frame 1-->
+<rect x="20" y="25" width="130" height="260" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="30" y="40" font-size="15" fill=#ffa02f>sqt.frame</text>
+<!-- frame 2-->
+<rect x="160" y="25" width="130" height="260" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="180" y="40" font-size="15" fill=#ffa02f>sqt.frame</text>
+<!-- widget 1-->
+<rect x="40" y="45" width="70" height="70" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="40" y="70" font-size="15" fill=#ffa02f>widget</text>
+<!-- widget 2-->
+<rect x="180" y="45" width="70" height="70" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="180" y="70" font-size="15" fill=#ffa02f>widget</text>
+</svg><br>
+The layout of an sqt panel
+
+++<
+There are 3 parts to an sqt panel.
+--<
+--+ The PanelBase (SimpleBase)
+--+ The Frames
+--+ The widgets
+>--
+The first thing is to create a panel class. Instead of an __init__ function, we create a drawPanel function. Thats where you create all the widgets.
+Example:
+--(
+class Panel(sqt.SimpleBase):<br>
+    def drawPanel(self):<br>
+        # Creating widgets goes here<br>
+)--
+>++
+
+%*%Widgets & Frames
+<!-- widgets and frames!-->
+++<
+#$ Frames<br>
+sqt.frames are quite simple. They are mainly holders for widgets, and, like sqt.SimpleBase, they have the position function, for positioning widgets. More on that in the next section<br>
+#$ Widgets<br>
+This is were PyQt4.QtGui comes in. simpleQt does have some simple widgets, but not many. I can't say how to use all the widgets in this tutorial, but if you go on the web and search how to use them, The exact same thing is used for panels, except "parent" is usally the frame which they are placed in.
+>++
+
+%*% Positioning
+<!-- positioning -->
+<svg width="300" height="300">
+<!-- Window -->
+
+<rect x="0" y="0" width="250" height="300" stroke=#ffa02f stroke-width="2" fill=#343434 />
+<!--  <text x="20" y="20" font-size="15" fill=#ffa02f>sqt.SimpleBase</text> -->
+<!-- widget 1 -->
+
+<rect x="5" y="5" width="115" height="145" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="20" y="70" font-size="20" fill=#000000>Widget 1</text> 
+
+<!-- widget 2 -->
+
+<rect x="120" y="5" width="115" height="145" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="140" y="70" font-size="20" fill=#000000>Widget 2</text> 
+
+<!-- widget 3 -->
+
+<rect x="120" y="150" width="115" height="145" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="140" y="210" font-size="20" fill=#000000>Widget 3</text> 
+
+</svg><br>
+<br>
+++<
+To create a panel displayd like that, you would use a list of lists, like this
+--(
+frame.position([[widget1,widget2],<br>
+                      [sqt.empty(),widget3]])
+)--
+<br>
+#$ sqt.empty()<br>
+places an invisible widget, as a placeholder. without it, it wouldn't be posible to create a layout like that.<br>
+#$ Positioning frames<br>
+To position frames, you use the sqt.SimpleBase.position function, but instead of positioning widgets, you position frames.
+>++
+
+
+%*%Finishing off
+<!-- how to finish, and use PanelFlags -->
+<svg width="300" height="300">
+<!-- Window -->
+
+<rect x="0" y="0" width="250" height="300" stroke=#ffa02f stroke-width="2" fill=#343434 />
+<!--  <text x="20" y="20" font-size="15" fill=#ffa02f>sqt.SimpleBase</text> -->
+<!-- widget 1 -->
+
+<rect x="5" y="5" width="85" height="295" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="20" y="70" font-size="20" fill=#000000>Sidebar</text> 
+
+  <text x="20" y="90" font-size="20" fill=#000000>Panel</text> 
+
+<!-- widget 2 -->
+
+<rect x="90" y="5" width="155" height="295" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="140" y="70" font-size="20" fill=#000000>Mainarea</text> 
+
+<!-- widget 3 -->
+
+<rect x="120" y="150" width="115" height="145" stroke=#ffa02f stroke-width="2" fill=#343434 />
+  <text x="140" y="210" font-size="20" fill=#000000>Panel</text> 
+
+</svg><br>
+Positions of sidebar and mainarea
+++<
+To Finish off, you need to put all your panels in a variable called 
+#$ __panels__
+. But, you have to put all your panels in ScopePy_panels.PanelFlags.
+If you want your panel to be a window in the mainarea, use this:<br>
+--(
+__panels__ = {"panelname":ScopePy_panels.PanelFlags(Panel)}
+)--
+Or, if you want it to be a sidebar tab,
+--(
+__panels__ = {'panel name':ScopePy_panels.PanelFlags(Panel,location='sidebar',<br>
+    open_on_startup=True,<br>
+    single_instance=True,<br>
+    on_panel_menu=False)}<br>
+)--
+>++
+    
+
+
+
+
+

@@ -1,0 +1,9 @@
+How to check out from svn
+
+svn co http://192.168.1.98/svn/scopepy/trunk/ <path where you want to code>
+svn co http://192.168.1.98/svn/scopepy/trunk/ ~/Documents/Temp/ScopePy
+
+# Backup to USB on desktop PC
+svn co http://192.168.1.98/svn/scopepy/trunk/ /media/john/Lexar/John_backup/ScopePy_server_backup/ScopePy
+
+# change

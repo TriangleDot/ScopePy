@@ -1,0 +1,34 @@
+title : ScopePy Users guide
+
+%*% Index
+++<
+%->%Key Combinations: Key Combinations
+>++
+++<
+%*%Link Reference
+%<-%link1
+%->%datasources: [1] <br>
+%<-%link2
+%->%channelselector: [2] <br>
+%<-%link3
+%->%fkeytoolbar: [3] <br>
+%<-%link4
+%->%Plot: [4] <br>
+%<-%link5
+%->%pythoneditor: [5] <br>
+>++
+%*%Key Combinations
+
+++<
+ScopePy's main key combinations: 
+%->%link1: Link Reference
+--<
+--+Ctrl+O : Open Datasource of other ScopePy format
+--+Alt+D: Datasource Selector: shows datasources.[1]
+--+Alt+N: Channel Selector: shows channels, and adds them to plots.[2]
+--+F3: Opens plot [4]. is on FKeyToolbar [3]
+--+F7: opens Python Editor [5]. is also on FKeyToolbar [3]
+>--
+>++
+
+
