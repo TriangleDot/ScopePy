@@ -7,9 +7,10 @@ Created on Sat Sep 26 09:31:47 2015
 Triangledot on KDE
 """
 #Triangledot
+from qt_imports import *
 import simpleQt as sqt
-from PyQt4.QtGui import QFileDialog, QKeySequence, QSizePolicy
-import ScopePy_panels as panel 
+
+import ScopePy_panels as panel
 import numpy as np
 import csslib as cl
 import os
@@ -21,10 +22,10 @@ class runner(sqt.SimpleBase):
 #        try:
 #            ros = cl.passCss(os.join(os.path.expanduser('~'),'.ScopePy','openatstart.css'))
 #            nos = True
-#            
+#
 #        except:
 #            nos = False
-#            
+#
 #        if nos:
 #            rd = ros['scripts']
 #            for i in rd:
@@ -32,9 +33,9 @@ class runner(sqt.SimpleBase):
 #                    exec(open(i,'r').read(),globals(),{'API':self.API})
 #                except Exception as ex:
 #                    print('Error: %s' % ex)
-#                    
+#
         self.addCommsAction('addScript',self.add)
-            
+
         mainframe = sqt.frame(self)
         label1 = sqt.label(mainframe,'<h3><b> The Runner that runs python scripts:<br> A:add|R:Run|P:Run With Python Editor</b></h3>')
         label = sqt.label(mainframe,'Select script to run with Alt+&3')
@@ -57,21 +58,21 @@ class runner(sqt.SimpleBase):
         label.widget.setBuddy(self.c.widget)
         mainframe.position([[label1,sqt.empty()],[label,sqt.empty()],[self.c,run],[sqt.empty(),add],[sqt.empty(),pyedit]])
         self.position([[mainframe],[sqt.empty()],[sqt.empty()],[sqt.empty()]])
-        
-        
-        
-        
+
+
+
+
     def add(self,scriptname):
         try:
             ros = cl.passCss(os.path.join(os.path.expanduser('~'),'.ScopePy','openatstart.css'))
             print(ros)
             nos = True
             print(ros['scripts'])
-            
+
         except Exception as ec:
             print(ec)
             nos = False
-            
+
         if nos:
             ros['scripts'][scriptname]=''
             print(ros)
@@ -80,7 +81,7 @@ class runner(sqt.SimpleBase):
         else:
             ros = {'scripts':{scriptname:''}}
         cl.createCss(ros,os.path.join(os.path.expanduser('~'),'.ScopePy','openatstart.css'))
-        
+
     def getcss(self):
        try:
            ros = cl.passCss(os.path.join(os.path.expanduser('~'),'.ScopePy','openatstart.css'))
@@ -89,12 +90,12 @@ class runner(sqt.SimpleBase):
            return ros['scripts']
        except:
            pass
-       
+
     def adder(self):
         filename = QFileDialog.getOpenFileName(self, 'Open file',os.path.expanduser('~'),'''python files (*.py);;All files (*)''')
         self.add(filename)
         self.c.addItem(filename)
-        
+
     def run(self):
         fname = self.c.currentText
         try:
@@ -110,7 +111,7 @@ class runner(sqt.SimpleBase):
             print('No Python Editor')
             return
         panel.openAndRun(fname)
-                   
+
     def helptext(self):
         print('***********************************')
         print('    Help Text')
@@ -118,7 +119,7 @@ class runner(sqt.SimpleBase):
         print('run')
         print('signal: addScript:scriptname')
         print('***********************************')
-        
+
 __panels__ = {"runner Alt-&2":panel.PanelFlags(runner,
                                                   open_on_startup=True,
                                                   location='sidebar',

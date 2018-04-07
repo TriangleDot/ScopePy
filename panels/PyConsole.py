@@ -1,12 +1,10 @@
 import sys, os
 import traceback
-from PyQt4 import QtCore
-from PyQt4 import QtGui
-from PyQt4 import QtWebKit
+
+from qt_extra import QtWebKit
 _locals = {}
 import sys
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from qt_imports import *
 #from ScopePy_API import API
 from ScopePy_panels import PanelBase, load_panels
 from pprint import pprint
@@ -31,40 +29,40 @@ class Browser(pb):
             Initialize the browser GUI and connect the events
         """
 
-        #QtGui.QWidget.__init__(self)
+        #QWidget.__init__(self)
         #self.resize(800,600)
-        # = QtGui.QWidget(self)
+        # = QWidget(self)
 
-        self.mainLayout = QtGui.QHBoxLayout()
+        self.mainLayout = QHBoxLayout()
 
-        
-        
 
-        self.frame = QtGui.QFrame()
+
+
+        self.frame = QFrame()
         self.frame.setFrameStyle(QFrame.Panel | QFrame.Raised)
         self.frame.setLineWidth(3)
-        
+
 
         self.panels = QComboBox(self.frame)
         self.panels.addItems(list(self.API.panel_classes.keys()))
         self.connect(self.panels,SIGNAL('currentIndexChanged(const QString&)'),self.getDocs)
-        
 
-        self.gridLayout = QtGui.QVBoxLayout(self.frame)
+
+        self.gridLayout = QVBoxLayout(self.frame)
 
         #self.resize(150,400)
         self.gridLayout.addWidget(self.panels)
         self.resize(450,400)
 
-        
 
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.tb_url = QtGui.QLineEdit(self.frame)
-        self.label = QtGui.QLabel('Find:',self.frame)
-        #self.bt_ahead = QtGui.QPushButton(self.frame)
 
-        
-        #self.bt_ahead.setIcon(QtGui.QIcon().fromTheme("go-next"))
+        self.horizontalLayout = QHBoxLayout()
+        self.tb_url = QLineEdit(self.frame)
+        self.label = QLabel('Find:',self.frame)
+        #self.bt_ahead = QPushButton(self.frame)
+
+
+        #self.bt_ahead.setIcon(QIcon().fromTheme("go-next"))
         self.horizontalLayout.addWidget(self.label)
         #self.horizontalLayout.addWidget(self.bt_ahead)
         self.horizontalLayout.addWidget(self.tb_url)
@@ -74,36 +72,36 @@ class Browser(pb):
         self.html = WebView()
         #self.html.setMinimumWidth(300)
         self.html.setSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
-        
+
         self.gridLayout.addWidget(self.html)
         self.mainLayout.addWidget(self.frame)
         #self.setCentralWidget()
 
-        self.connect(self.tb_url, QtCore.SIGNAL("returnPressed()"), self.findText)
-        #self.connect(self.bt_back, QtCore.SIGNAL("clicked()"), self.html.back)
-        #self.connect(self.bt_ahead, QtCore.SIGNAL("clicked()"), self.html.forward)
+        self.connect(self.tb_url, SIGNAL("returnPressed()"), self.findText)
+        #self.connect(self.bt_back, SIGNAL("clicked()"), self.html.back)
+        #self.connect(self.bt_ahead, SIGNAL("clicked()"), self.html.forward)
 
         self.setLayout(self.mainLayout)
         self.addCommsAction('setDocs',self.browse)
         self.addCommsAction('setHtml',self.docs)
         self.browse(None)
         self.show()
-        
-        
-        
 
 
 
-    
+
+
+
+
 
     def docs(self,htmlwrapper):
         f = open(os.path.join(os.path.expanduser('~'),'.ScopePy','tmp.html'),'w')
         f.write(htmlwrapper.html)
         f.flush()
         f.close()
-        
-        self.html.load(QtCore.QUrl(os.path.join(os.path.expanduser('~'),'.ScopePy','tmp.html')))
-        
+
+        self.html.load(QUrl(os.path.join(os.path.expanduser('~'),'.ScopePy','tmp.html')))
+
 
 
     def getDocs(self,item):
@@ -130,7 +128,7 @@ class Browser(pb):
         if hasattr(fomoc,'__func__'):
             html = rc.functionToHtml(fomoc.__func__)
 
-            
+
         elif fomoc == None:
             html = '<h1>about:blank</h1>'
         elif inspect.ismodule(fomoc):
@@ -142,7 +140,7 @@ class Browser(pb):
         elif inspect.isclass(fomoc):
             html = rc.classToHtml(fomoc,fomoc.__name__)
         else:
-            
+
             fomoc = type(fomoc)
             if fomoc == None:
                 html = '<h1>about:blank</h1>'
@@ -155,7 +153,7 @@ class Browser(pb):
                 html = rc.functionToHtml(fomoc)
                 #print(html)
             elif inspect.isclass(fomoc):
-                
+
                 html = rc.classToHtml(fomoc,fomoc.__name__)
             else:
                 html = '<h1>Invalid Input</h1>'
@@ -164,21 +162,21 @@ class Browser(pb):
 
     def findText(self):
         self.html.findText(self.tb_url.text())
-        
-        
-        
+
+
+
 class WebView(QtWebKit.QWebView):
-    
+
     def __init__(self,parent=None):
-        
+
         super(WebView, self).__init__(parent)
         self.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
-        
-        
+
+
     def sizeHint(self):
-        
+
         return QSize(300,300)
-        
+
 from collections import UserString
 class StringVar(Connection,UserString):
      def setData(self,new_data):
@@ -200,52 +198,52 @@ class lockClass(object):
     def __viewhelp__(self):
         return self.API
 
-    
-class Console(QtGui.QPlainTextEdit,Connection):
+
+class Console(QPlainTextEdit,Connection):
     def __init__(self, prompt='-->: ', startup_message='', parent=None):
         super(Console,self).__init__()
         self.start('Console')
         self.setWindowTitle("python qt console")
-        QtGui.QPlainTextEdit.__init__(self, parent)
+        QPlainTextEdit.__init__(self, parent)
         self._locals = {}
         self.prompt = prompt
         self.config = conf.load('PyEditor')
         self.maxHistory = int(conf.check(self.config,['CONSOLE','history'],'100'))
         self.Cconnect = lambda :Connection.connect(self)
-        
+
         self.loadHistory()
         self.namespace = {}
         self.construct = []
         self.inputMode = False
         #self._locals['input'] = self.c_input
         self.print_lock = QReadWriteLock()
-        
-        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         #self.setMaximumWidth(HORIZ_SIZE)
         #self.setMaximumHeight(VERT_SIZE/2)
         self.setLineWrapMode(QPlainTextEdit.NoWrap)
         self.setUpdatesEnabled(True)
-        
+
 
         self.setGeometry(50, 75, 600, 400)
-        self.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
+        self.setWordWrapMode(QTextOption.WrapAnywhere)
         self.setUndoRedoEnabled(False)
-        
+
         font = conf.check(self.config,['CONSOLE','font'],'Courier')
-        
+
         try:
             ros = self.config.get('RunOnStartup',[])
         except:
             ros = []
-       
+
         self._locals['console'] = self
-        self.document().setDefaultFont(QtGui.QFont(font, 10, QtGui.QFont.Normal))
+        self.document().setDefaultFont(QFont(font, 10, QFont.Normal))
         self.showMessage(startup_message)
         for i in ros:
             self.setCommand('console.runfile("%s")' % (i))
             self.runCommand(self.getCommand())
-            
+
             self.newPrompt()
             self.old_history.pop(-1)
             self.history = self.old_history
@@ -253,18 +251,18 @@ class Console(QtGui.QPlainTextEdit,Connection):
     def minimumSizeHint(self):
         """
         Set the minimum size
-        
+
         """
-        
+
         return QSize(200,300)
 
     def loadHistory(self):
-        
+
         try:
             f = open(os.path.join(os.path.expanduser('~'),'.ScopePy','PythonHistory.log'),'rb')
         except FileNotFoundError:
             self.saveHistory('')
-            
+
             f = open(os.path.join(os.path.expanduser('~'),'.ScopePy','PythonHistory.log'),'rb')
         t = f.read().decode()
         f.close()
@@ -280,16 +278,16 @@ class Console(QtGui.QPlainTextEdit,Connection):
         self.old_history = h
         self.history_index = len(self.old_history)
         self.history = self.old_history
-        
+
 
     def saveHistory(self,command):
-        
+
         t = command+';'
         f = open(os.path.join(os.path.expanduser('~'),'.ScopePy','PythonHistory.log'),'ab')
         f.write(t.encode())
         f.flush()
         f.close()
-        
+
 
     def updateNamespace(self, namespace):
         self.namespace.update(namespace)
@@ -304,7 +302,7 @@ class Console(QtGui.QPlainTextEdit,Connection):
         else:
             prompt = self.prompt
         self.appendPlainText(prompt)
-        self.moveCursor(QtGui.QTextCursor.End)
+        self.moveCursor(QTextCursor.End)
 
     def getCommand(self):
         doc = self.document()
@@ -316,13 +314,13 @@ class Console(QtGui.QPlainTextEdit,Connection):
     def setCommand(self, command):
         if self.getCommand() == command:
             return
-        self.moveCursor(QtGui.QTextCursor.End)
-        self.moveCursor(QtGui.QTextCursor.StartOfLine, QtGui.QTextCursor.KeepAnchor)
+        self.moveCursor(QTextCursor.End)
+        self.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         for i in range(len(self.prompt)):
-            self.moveCursor(QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor)
+            self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
         self.textCursor().removeSelectedText()
         self.textCursor().insertText(command)
-        self.moveCursor(QtGui.QTextCursor.End)
+        self.moveCursor(QTextCursor.End)
 
     def getConstruct(self, command):
         if self.construct:
@@ -358,7 +356,7 @@ class Console(QtGui.QPlainTextEdit,Connection):
             if self.getCommand() == '':
                 self.history = self.old_history
             else:
-                
+
                 if self.getCommand() in self.history:
                     pass
                 else:
@@ -366,7 +364,7 @@ class Console(QtGui.QPlainTextEdit,Connection):
                     for i in self.old_history:
                         if i.startswith(self.getCommand()):
                             self.history.append(i)
-                
+
             self.history_index = max(0, self.history_index - 1)
             #print(self.history)
             try:
@@ -392,9 +390,9 @@ class Console(QtGui.QPlainTextEdit,Connection):
         return self.textCursor().columnNumber() - len(self.prompt)
 
     def setCursorPosition(self, position):
-        self.moveCursor(QtGui.QTextCursor.StartOfLine)
+        self.moveCursor(QTextCursor.StartOfLine)
         for i in range(len(self.prompt) + position):
-            self.moveCursor(QtGui.QTextCursor.Right)
+            self.moveCursor(QTextCursor.Right)
 
     def c_input(self,msg):
         '''
@@ -411,15 +409,15 @@ test
         self.API = self._locals['API']
         self.inputMode = True
         self.isreafy = False
-        
+
         var = StringVar('')
         var.start('Console')
         self.addConnection(var,lambda self:self.inputMessage,self)
-        
+
         return var
-        
-        
-        
+
+
+
 
     def runCommand(self,command=None):
         #self.setWindowTitle("*python qt console*")
@@ -433,7 +431,7 @@ test
         if command == 'quit()':
             #raise NotImplementedError('Invalid Use of quit in Python console')
             self.destroy()
-            
+
 
         if command:
             tmp_stdout = sys.stdout
@@ -448,22 +446,22 @@ test
                 def write(self, text):
                     self.lock.lockForWrite()
                     if not self.skip:
-                        
+
                         stripped_text = text.rstrip('\n')
-                        
+
                         self.write_func(stripped_text)
-                        
-                        QtCore.QCoreApplication.processEvents()
+
+                        QCoreApplication.processEvents()
                     self.skip = not self.skip
                     self.lock.unlock()
 
             sys.stdout = stdoutProxy(self.appendPlainText,self.print_lock)
             sys.stderr = stdoutProxy(self.appendPlainText,self.print_lock)
-            
+
             try:
                 try:
                     result = eval(command,globals(),self._locals)
-                    
+
                     if result != None:
                         self.appendPlainText(repr(result))
                 except SyntaxError:
@@ -484,66 +482,66 @@ test
                 # Remove traceback mentioning this file, and a linebreak
                 for i in (2,1,-1):
                     traceback_lines.pop(i)
-                    
+
                 self.appendPlainText('\n'.join(traceback_lines))
-                
+
             sys.stdout = tmp_stdout
             sys.stderr = tmp_stderr
 
 
-        
+
         #self.setWindowTitle("python qt console")
 
     def keyPressEvent(self, event):
-        if event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):
+        if event.key() in (Qt.Key_Enter, Qt.Key_Return):
             self.isreafy = True
             self.Cconnect()
             if self.inputMode == True:
-                
-                
+
+
                 cm = self.getCommand()
                 self.prompt = self.defaultPrompt
                 self.newPrompt()
                 noz = True
             else:
                 self.runCommand(self.getCommand())
-                
+
                 self.newPrompt()
                 noz = False
             if noz:
                 self.inputMode = False
                 self.inputMessage=cm
             return
-        if event.key() == QtCore.Qt.Key_Home:
-            
+        if event.key() == Qt.Key_Home:
+
             self.setCursorPosition(0)
             return
-        if event.key() == QtCore.Qt.Key_PageUp:
-            
+        if event.key() == Qt.Key_PageUp:
+
             return
-        elif event.key() in (QtCore.Qt.Key_Left, QtCore.Qt.Key_Backspace):
-            
+        elif event.key() in (Qt.Key_Left, Qt.Key_Backspace):
+
             if self.getCursorPosition() == 0:
-                
+
                 return
-        elif event.key() == QtCore.Qt.Key_Up:
-            
+        elif event.key() == Qt.Key_Up:
+
             self.setCommand(self.getPrevHistoryEntry())
-            
+
             return
-        elif event.key() == QtCore.Qt.Key_Down:
-            
+        elif event.key() == Qt.Key_Down:
+
             self.setCommand(self.getNextHistoryEntry())
-            
+
             return
-        elif event.key() == QtCore.Qt.Key_D and event.modifiers() == QtCore.Qt.ControlModifier:
-            
+        elif event.key() == Qt.Key_D and event.modifiers() == Qt.ControlModifier:
+
             self.restart()
-            
-        elif event.key() == QtCore.Qt.Key_C and event.modifiers() == QtCore.Qt.AltModifier:
-            
+
+        elif event.key() == Qt.Key_C and event.modifiers() == Qt.AltModifier:
+
             self.restart()
-            
+
         if (event.type() == QEvent.KeyPress and
             event.key() == Qt.Key_Tab):
             text = self.getCommand()
@@ -551,27 +549,27 @@ test
             print(a)
             print(b)
             tlist = dir(a)
-            
+
             anserlist = []
             for i in tlist:
                 if i.startswith(b):
                     anserlist.append(i)
-                    
+
             if len(anserlist) != 1:
                 return True
-                
+
             else:
-                
+
                 self.setCommand(a+anserlist[0])
-                
+
             return True
-            
-            
-        
+
+
+
         super(Console, self).keyPressEvent(event)
-        
-    
-    
+
+
+
     def commands(self):
         self.showMessage("""
         updateNamespace()
@@ -589,16 +587,16 @@ test
         setCursorPosition()
         runCommand()
         KeyPressEvent()
-        kill()        
-        
+        kill()
+
         This is the help for are special commands""")
-        
+
     def kill(self):
         self.newPrompt()
         self.setCommand("quit()")
         self.runCommand()
-        
-        
+
+
     def runfile(self,filename):
         self._locals['__name__'] = '__main__'
         self._locals['__file__'] = filename
@@ -614,18 +612,18 @@ test
         l = l.replace('\r','')
         if l == '#!@MathChannel':
             self.API.load_math_functions()
-        
-        
+
+
         #exec(compile(open(filename,'r').read(),fn % filename,'exec'),globals(),self._locals)
         import runpy
         #t = QThread(self)
         #target=lambda :
-        
+
         glbs = runpy.run_path(filename,self._locals,run_name='__main__')
         self._locals.update(glbs)
-        
+
         #t.start()
-        
+
 
     def restart(self):
         self.close()
@@ -634,7 +632,7 @@ test
             msg = '''
 ----------RESTART----------
 '''
-            
+
             mc = Console(self.prompt,msg)
             mc._locals = self._locals
             panel.position([[mc],[self._locals['editor']]])
@@ -642,8 +640,8 @@ test
             mc._locals['console'] = mc
 
         del self
-        
-        
+
+
 class PythonHighlighter(QSyntaxHighlighter):
 
     Rules = []
@@ -669,7 +667,7 @@ class PythonHighlighter(QSyntaxHighlighter):
                     r"\byield\b",r"\bself\b")):
                 PythonHighlighter.Rules.append((QRegExp(pattern),
                                                keywordFormat))
-                                               
+
             for pattern in ((r"\blambda\b",r"\bprint\b",r"\bexec\b", r"\brange\b", r"\blist\b",
                              r"\bstr\b",r"\bint\b",r"\bfloat\b",r"\bdict\b",r"\bAPI\b",r"\blen\b")):
                 PythonHighlighter.Rules.append((QRegExp(pattern),
@@ -690,7 +688,7 @@ class PythonHighlighter(QSyntaxHighlighter):
                                             self.stringFormat))
             self.tripleSingleRe = QRegExp(r"""'''(?!")""")
             self.tripleDoubleRe = QRegExp(r'''"""(?!')''')
-            
+
         else:
             keywordFormat = QTextCharFormat()
             keywordFormat.setForeground(QColor(ds['keywords']))
@@ -709,7 +707,7 @@ class PythonHighlighter(QSyntaxHighlighter):
                     r"\byield\b",r"\bself\b")):
                 PythonHighlighter.Rules.append((QRegExp(pattern),
                                                keywordFormat))
-                                               
+
             for pattern in ((r"\blambda\b",r"\bprint\b",r"\bexec\b", r"\brange\b", r"\blist\b",
                              r"\bstr\b",r"\bint\b",r"\bfloat\b",r"\bdict\b",r"\bAPI\b",r"\blen\b")):
                 PythonHighlighter.Rules.append((QRegExp(pattern),
@@ -793,7 +791,7 @@ class PyEditor(QMainWindow):
         self.editor = TextEdit()
         self.editor.setFont(font)
         self.editor.keyPressEvent = self.keyPressEvent
-        
+
         tpath = self.API.getThemePath(self.API.preferences.theme)
         self.API.log.error(tpath)
         self.config = conf.load('PyEditor')
@@ -801,7 +799,7 @@ class PyEditor(QMainWindow):
             ds = self.config['COLORS']
         except:
             ds = None
-        
+
         self.highlighter = PythonHighlighter(ds,self.editor.document())
         self.setCentralWidget(self.editor)
 
@@ -811,13 +809,13 @@ class PyEditor(QMainWindow):
 
         fileNewAction = self.createAction("&New...", self.fileNew,
                 QKeySequence.New, "filenew", "Create a Python file")
-                
-                
+
+
         run = self.createAction("&Run...", self.run,
                 '', "Run", "Run a Python script")
         #run.setShortcut('F5')
-                
-                
+
+
         fileOpenAction = self.createAction("&Open...", self.fileOpen,
                 QKeySequence.Open, "fileopen",
                 "Open an existing Python file")
@@ -837,7 +835,7 @@ class PyEditor(QMainWindow):
         self.editPasteAction = self.createAction("&Paste",
                 self.editor.paste, QKeySequence.Paste, "editpaste",
                 "Paste in the clipboard's text")
-                
+
         self.editPasteAction = self.createAction("html",
                 self.saveHtml, 'Shift+Alt+s', "saveashtml",
                 "html")
@@ -881,7 +879,7 @@ class PyEditor(QMainWindow):
                 SIGNAL("modificationChanged(bool)"), self.changed)
         self.connect(QApplication.clipboard(),
                 SIGNAL("dataChanged()"), self.updateUi)
-                
+
         self.fkeys = [
                      ['F4','New',self.fileNew],
                      ['F5','Run',self.run],
@@ -1009,7 +1007,7 @@ class PyEditor(QMainWindow):
         fname = QFileDialog.getOpenFileName(self,
                 "Python Editor - Choose File", dir,
                 "Python files (*.py *.pyw)")
-    
+
         if fname:
             self.filename = fname
             self.loadFile()
@@ -1068,7 +1066,7 @@ class PyEditor(QMainWindow):
                     QFileInfo(self.filename).fileName()))
             return self.fileSave()
         return False
-        
+
     def sqtmode(self):
         if self.sqt:
             self.sqt  = False
@@ -1082,7 +1080,7 @@ class PyEditor(QMainWindow):
         if not self.sqt:
             self.console.setCommand('console.runfile("%s")' % (self.filename))
             self.console.runCommand(self.console.getCommand())
-            
+
             self.console.newPrompt()
             self.console.old_history.pop(-1)
             self.console.history = self.console.old_history
@@ -1091,15 +1089,15 @@ class PyEditor(QMainWindow):
             self.console.setCommand('exec(open("%s","r").read(),globals(),console._locals)' % (self.filename))
             self.console.runCommand()
             self.panel.runsqt(self.console._locals['__panels__'])
-            
+
     def stop(self):
         self.console.newPrompt()
         self.console.isready = False
         while self.console.isready == True:
             return
         self.console.newPrompt()
-            
-            
+
+
     def saveHtml(self):
         #filename = self.filename if self.filename is not None else "."
         filename = QFileDialog.getSaveFileName(self,
@@ -1111,7 +1109,7 @@ class PyEditor(QMainWindow):
             f.flush()
             f.close()
         return False
-        
+
     def addIndent(self):
         self.indent += 1
 
@@ -1147,18 +1145,18 @@ mathFunctions.append(ex)
             return
 
         QTextEdit.keyPressEvent(self.editor,e)
-        
-        
-        
 
 
-       
 
-    
-    
-        
+
+
+
+
+
+
+
 import ScopePy_config as conf
-    
+
 #print(FUNKS)
 class PyConsole(sqt.SimpleBase):
     def drawPanel(self):
@@ -1166,9 +1164,9 @@ class PyConsole(sqt.SimpleBase):
         self.isSaveable = True
         welcome_message = '''
         This is ScopePy's Triangledot Python
-        Interpreter. 
-        
-        To use ScopePy's Python Interface, use 
+        Interpreter.
+
+        To use ScopePy's Python Interface, use
         Global Variables <API> <panel> <console> and <editor>
         For controling this panel.
         Type viewHelp(object) for graphical help
@@ -1185,13 +1183,13 @@ class PyConsole(sqt.SimpleBase):
         globals()['API'] = self.API
         self.console =  Console(prompt=prompt,startup_message=welcome_message)
         self.editor = PyEditor(self.console,self)
-##        layout = QtGui.QVBoxLayout(self)
+##        layout = QVBoxLayout(self)
 ##        layout.addWidget(self.console)
 ##        layout.addWidget(self.editor)
 ##        w.setLayout(layout)
         #self.browser = Browser()
         lab = QLabel('')
-        
+
         ef = sqt.frame(self)
         ef.position([[self.console],[lab],[self.editor]])
         self.editor.setWindowTitle = lab.setText
@@ -1205,11 +1203,11 @@ class PyConsole(sqt.SimpleBase):
         from pprint import pprint
         self.console._locals["pprint"]=pprint
         globals()['pprint'] = pprint
-        
+
         self.setLayout(l)
         self.wd = {'main':w}
         self.stack.addWidget(w)
-        
+
 
     def onClose(self):
         if self.editor.editor.document().isModified():
@@ -1217,17 +1215,17 @@ class PyConsole(sqt.SimpleBase):
             return None # TODO : Fix
         else:
             return None
-        
+
     def setFkeys(self):
-        
+
         self.Fkeys = self.editor.fkeys
-    
+
     def minimumSizeHint(self):
         """
         Set the minimum size
-        
+
         """
-        
+
         return QSize(HORIZ_SIZE,VERT_SIZE)
 
     def openAndRun(self,filename):
@@ -1237,7 +1235,7 @@ class PyConsole(sqt.SimpleBase):
             self.editor.editor.setPlainText(txt)
             self.editor.filename = filename
             self.editor.run()
-        
+
     def runsqt(self,flags):
         for i in flags:
             currentDockArea = self.API._gui.mainArea.currentWidget()
@@ -1246,7 +1244,7 @@ class PyConsole(sqt.SimpleBase):
         '''
 Show graphical help on a module, function, or class
 '''
-        
+
         self.API.sendComms('setDocs',self.API.panelID('Docs Browser'),fomoc)
     def addChannel(self,channel):
         try:
@@ -1256,7 +1254,7 @@ Show graphical help on a module, function, or class
             return
         name = channel.replace(' ','_')
         self.console.showMessage('Added new channel as varible <%s>' % name)
-        
+
         ch = self.API.channel_dict[channel]
         self.console._locals[name] = ch
 
@@ -1268,11 +1266,11 @@ Show graphical help on a module, function, or class
     def restoreData(self,panel_data):
         self.editor.editor.setText(panel_data['text'])
         self.editor.filename = panel_data['filename']
-        
-        
-        
-        
-    
+
+
+
+
+
 from ScopePy_widgets import colorpicker
 import ScopePy_config as conf
 class settings(conf.ConfigBase):
@@ -1309,18 +1307,18 @@ class settings(conf.ConfigBase):
                          [sqt.label(self,'Enter maximum amount of history.')],[self.spin]])
         loros = self.config.get('RunOnStartup',[])
         self.rosbox = PrefBox(self,paths=loros,dirmode=False)
-        
+
 
         ff = sqt.frame(self)
         fonte = conf.check(self.config,['EDITOR','font'],'Courier')
         fontc = conf.check(self.config,['CONSOLE','font'],'Courier')
-        
+
         self.fstore = {'editor-font':fonte,'console-font':fontc}
         b1 = QPushButton('Select Font')
-        b2 = QPushButton('Select Font') 
+        b2 = QPushButton('Select Font')
         b1.clicked.connect(self.setFont1)
         b2.clicked.connect(self.setFont2)
-        
+
         ff.position([[sqt.label(ff,'Select font for editor:'),b1],
                      [sqt.label(ff,'Select font for console'),b2]])
         d['color'] = frame
@@ -1328,12 +1326,12 @@ class settings(conf.ConfigBase):
         d['font'] = ff
         d['Run On Startup'] = self.rosbox
         self.setupTabs(d)
-                       
+
     def getSettings(self):
         #tpath = self.API.getThemePath(self.API.preferences.theme)
         #self.API.log.error(tpath)
         #css = csslib.passCss(tpath)
-        
+
         self.config = conf.load('PyEditor')
         if self.config == None:
             self.API.log.debug('No Python Editor Themes in this Theme!!!!\n')
@@ -1341,22 +1339,22 @@ class settings(conf.ConfigBase):
                   'builtins':'#008fb0',
                   'comments':'#ff0000',
                   'strings':'#00a700'}
-            
+
         else:
             ds = {'keywords':self.config['COLORS']['keywords'],
                   'builtins':self.config['COLORS']['builtins'],
                   'comments':self.config['COLORS']['comments'],
                   'strings':self.config['COLORS']['strings']}
-            
+
         self.datastore = ds
-        
+
     def setcolor(self):
         self.datastore[self.c.currentText] = self.color.name
-        
+
 ##        tpath = self.API.getThemePath(self.API.preferences.theme)
 ##        self.API.log.error(tpath)
 ##        css = csslib.passCss(tpath)
-##        
+##
 ##        css['Pyeditor::themes'] = self.datastore
 ##        csslib.createCss(css,tpath)
 
@@ -1368,9 +1366,9 @@ class settings(conf.ConfigBase):
                               'EDITOR':{'runname':self.runname.text(),
                                         'font':self.fstore['editor-font']},
                               'RunOnStartup':self.rosbox.path})
-        
-        
-        
+
+
+
     def textChanged(self,index):
         text = self.datastore[['keywords','builtins','comments','strings'][index]]
         self.color.setNamedColor(text)
@@ -1378,7 +1376,7 @@ class settings(conf.ConfigBase):
     def setFont1(self):
         font = conf.check(self.config,['EDITOR','font'],'Courier')
         f ,suc= QFontDialog.getFont(QFont(font),self,'Select font for Editor')
-        
+
         font = f.toString()
 
         if suc:
@@ -1389,30 +1387,30 @@ class settings(conf.ConfigBase):
     def setFont2(self):
         font = conf.check(self.config,['CONSOLE','font'],'Courier')
         f,suc = QFontDialog.getFont(QFont(font),self,'Select font for Console')
-        
+
         font = f.toString()
         if suc:
             font = font.split(',')
             self.fstore['console-font'] = font[0]
-        
-        
-        
-        
+
+
+
+
 welcome_message = '''
    ---------------------------------------------------------------
      Welcome to a triangledot qt Python interpreter.
    ---------------------------------------------------------------
 '''
 def fake_input(prompt):
-    text, ok = QtGui.QInputDialog.getText(console, prompt, 
+    text, ok = QInputDialog.getText(console, prompt,
                 prompt)
-                
+
     return text
-    
+
 def runfile(filename):
     exec(open(filename).read(),globals(),console._locals)
 if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     console = Console(startup_message=welcome_message)
     #console.updateNamespace({'application' : app, 'anum' : 1234})
     console.setWindowTitle("python qt console")

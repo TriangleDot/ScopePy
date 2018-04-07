@@ -54,8 +54,7 @@ import logging
 # Third party libraries
 import numpy as np
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qt_imports import *
 
 
 # My libraries
@@ -97,10 +96,10 @@ logger.addHandler(con)
 
 class Shortcuts():
     """
-    Class for holding a collection of keyboard shortcut reference to the name 
+    Class for holding a collection of keyboard shortcut reference to the name
     of an action. Basically it's a dictionary of keyboard shortcuts with some
     extra functions
-    
+
     Example
     ----------
     mainShortcuts = ShortCuts()
@@ -109,90 +108,90 @@ class Shortcuts():
     shortCut = mainShortcuts.NewPlot
 
     event = QKeyPressEvent()
-    action = mainShortcuts.getActionFromEvent(event)    
-    
+    action = mainShortcuts.getActionFromEvent(event)
+
     """
-    
+
     def __init__(self):
-        
-        
+
+
         # Main dictionary for holding shortcuts
         # key = action name
         # item = QKeySequence
         self.action2key = {}
-        
+
         # Reverse lookup dictionary
         self.key2action = {}
-        
+
     def __str__(self):
-        
+
         lines = []
-        
+
         for action,keySeq in self.action2key.items():
             lines.append("%s : %s" % (action,keySeq.toString()))
-            
+
         return '\n'.join(lines)
-        
-        
+
+
     def __repr__(self):
-        
+
         return "Shortcuts() object"
-        
-        
+
+
     def addShortCut(self,actionName,shortcut):
         """
         Add new shortcut to internal dictionary
-        
+
         Inputs
         -------
         actionName : str
             Name label for the action represented by this shortcut
-            
+
         shortcut : str or Qt key list
             e.g. "Ctrl+t" or Qt.CTRL+Qt.Key_T
-            
+
             This will be converted into a QKeySequence
-            
+
         """
-        # Convert shortcut to key sequence            
+        # Convert shortcut to key sequence
         if isinstance(shortcut,QKeySequence):
             keySeq = shortcut
         else:
             # Anything else just QKeySequence it
             keySeq = QKeySequence(shortcut)
 
-            
 
-        # Add to dictionaries        
+
+        # Add to dictionaries
         self.action2key[actionName] = keySeq
         self.key2action[self.action2key[actionName].toString().lower()] = actionName
-        
+
         # Try to add as an attribute
         try:
             setattr(self,actionName,self.action2key[actionName])
         finally:
             pass
-        
-    
+
+
 
     def __getitem__(self,actionName):
-        
+
         assert actionName in self.action2key,"Shortcuts: Unknown action [%s]" % actionName
-        
+
         return self.action2key[actionName]
-        
-        
+
+
     def __setitem__(self,actionName,shortcut):
-        
+
         self.addShortCut(actionName,shortcut)
-        
-        
-    
+
+
+
     def getActionFromEvent(self,event):
         """
         Check if the event is the same as any of the shortcuts contained
         in this Shortcuts() class
-        
+
         Example usage
         ---------------
         >>> S = Shortcuts()
@@ -200,22 +199,22 @@ class Shortcuts():
         >>> event = QKeyEvent(QEvent.KeyPress,Qt.Key_N,Qt.ControlModifier)
         >>> S.getActionFromEvent(event)
         'new'
-        
+
         """
-        
+
         # Convert event into a QKeySequence string
         # ------------------------------------------
         keySeq = QKeySequence(event.modifiers()|event.key()).toString().lower()
-        
-        
+
+
         # Cross reference key sequence
         # ------------------------------
         if keySeq in self.key2action:
             return self.key2action[keySeq]
         else:
             return
-            
-    
+
+
 
 #==============================================================================
 #%% Default Keyboard shortcuts
@@ -224,12 +223,12 @@ class Shortcuts():
 def makeDefaultKeyboardShortcuts():
     """
     Make defaults and return in one collected variable
-    
+
     """
-    
+
     # Programming note:
     # --------------------
-    # Would really like to use the QKeySequence.StandardKey to generate the 
+    # Would really like to use the QKeySequence.StandardKey to generate the
     # "standard" shortcuts like "Open" but doing this, for example
     #   QKeySequence(QKeySequence.Print)
     # As given in the documentation crashes the program with no explanation
@@ -243,8 +242,8 @@ def makeDefaultKeyboardShortcuts():
     mainShortcuts['newTab'] = "Ctrl+t"
     mainShortcuts['config'] = "Ctrl+Alt+i"
     mainShortcuts['panels'] = Qt.Key_Meta # windows key
-    
-    
+
+
     # Plot
     plotShortcuts = Shortcuts()
     plotShortcuts['autoscale'] = 'Ctrl+A'
@@ -260,11 +259,11 @@ def makeDefaultKeyboardShortcuts():
     plotShortcuts['scale_y_in'] = Qt.CTRL+Qt.Key_Down
     plotShortcuts['scale_x_out'] = Qt.CTRL+Qt.Key_Right
     plotShortcuts['scale_x_in'] = Qt.CTRL+Qt.Key_Left
-    
-    
+
+
 #    wholeTable = {'main':mainShortcuts,'plot':plotShortcuts}
     wholeTable = minidir()
     wholeTable['main'] = mainShortcuts
     wholeTable['plot'] = plotShortcuts
-    
+
     return wholeTable

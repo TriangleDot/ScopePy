@@ -1,7 +1,6 @@
 import simpleQt as sqt
 import os
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from qt_imports import *
 
 class fileBrowseLine(sqt.frame):
     def __init__(self,panel,fname = os.path.expanduser('~'),filters=[],dirmode=False):
@@ -24,7 +23,7 @@ class fileBrowseLine(sqt.frame):
             self.edit.setText(fname)
             self.emit(SIGNAL('FilenameChanged'),self.filename)
 
-    
+
 
     @property
     def filename(self):
@@ -43,7 +42,7 @@ options:
     creator: Create Channel Function,
         takes arguments (channelname,xaxis,yaxis)
     '''
-    
+
     def __init__(self,panel,**options):
         super(addChannel,self).__init__(panel)
         self.panel = panel
@@ -116,8 +115,8 @@ Y Axis Label: %s
 >
 ''' % v
         return xt
-        
-             
+
+
 #import simpleQt as sqt
 #from moreSqt import fileBrowseLine
 class PrefBox(sqt.frame):
@@ -140,16 +139,16 @@ class PrefBox(sqt.frame):
         buttonframe.position([[a],[d]])
         mainframe.position([[self.listbox,buttonframe]])
         self.position([[self.fnameline],[mainframe]])
-        
-        
-        
+
+
+
 
     def delete(self):
         #ItemSelect = list(self.ListDialog.ContentList.selectedItems())
         for SelectedItem in self.listbox.selectedItems():
             self.listbox.takeItem(self.listbox.row(SelectedItem))
     def add(self):
-        
+
         self.listbox.addItem(self.fnameline.filename)
 
     def setSelected(self,selected):
@@ -162,12 +161,12 @@ class PrefBox(sqt.frame):
 
 
 
-    
-        
 
-    
-             
-        
+
+
+
+
+
 
 if __name__ == '__main__':
     app = QApplication([])
@@ -176,11 +175,10 @@ if __name__ == '__main__':
     #print(f['channelname'])
     #f['xaxis'] = 'XAX'
     #print(f)
-    
+
     grid = QVBoxLayout(w)
     grid.addWidget(f)
     w.setLayout(grid)
     w.show()
     app.exec_()
     print(f.path)
-

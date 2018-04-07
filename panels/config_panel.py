@@ -1,12 +1,12 @@
 import ScopePy_panels as panel
-from PyQt4.QtGui import *
+from qt_imports import *
 import simpleQt as sqt
 
 class configs(panel.PanelBase):
     def drawPanel(self,*args):
         print(args)
         if not args:
-            
+
             self.conf = self.API.conf
         else:
             try:
@@ -16,7 +16,7 @@ class configs(panel.PanelBase):
             except Exception as ec:
                 w = sqt.frame(self)
                 w.position([[sqt.label(self,'<font color=#ff0000>Error in config %s - \n %s:\n %s</font>' % (i,ec.__class__.__name__,ec))]])
-                w.onSave = lambda : None 
+                w.onSave = lambda : None
                 self.conf = {'error':w}
         self.tabs = QTabWidget()
         #self.tabs.show()
@@ -25,7 +25,7 @@ class configs(panel.PanelBase):
         l = QVBoxLayout(self)
         l.addWidget(self.button)
         l.addWidget(self.tabs)
-        
+
         self.widgets = {}
         for i in self.conf.keys():
             try:
@@ -33,8 +33,8 @@ class configs(panel.PanelBase):
             except Exception as ec:
                 w = sqt.frame(self)
                 w.position([[sqt.label(self,'<font color=#ff0000>Error in config %s - \n %s:\n %s</font>' % (i,ec.__class__.__name__,ec))]])
-                w.onSave = lambda : None 
-            
+                w.onSave = lambda : None
+
             print(i)
             print(w)
             print(self.conf[i])
@@ -45,9 +45,9 @@ class configs(panel.PanelBase):
 
         self.setLayout(l)
         #self.tabs.show()
-        
 
-        
+
+
 
     def save(self):
         for i in self.widgets:

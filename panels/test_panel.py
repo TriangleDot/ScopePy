@@ -50,8 +50,7 @@ import imp
 # Third party libraries
 import numpy as np
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qt_imports import *
 
 # My libraries
 import simpleQt as sqt
@@ -71,63 +70,63 @@ from widgets.sqlite import sqliteConsole
 class TestPanel(sqt.SimpleBase):
     """
     Test panel for ScopePy
-    
+
     No __init__() required as it must be the same as the base class
     Must reimplement the drawPanel() method
-    
+
     """
-    
+
     def drawPanel(self):
         """
         Draw the GUI elements of the panel
-        
+
         This is a Mandatory function. It will be called by ScopePy when
         the panel is added to a tab.
-        
+
         """
-        
+
         # Panel layout code goes here
         # =============================
-        
+
         # Master layout
-        panelLayout = QVBoxLayout()    
-        
+        panelLayout = QVBoxLayout()
+
         # Example buttons
         testButton1 = QPushButton("Test button 1")
 
         testButton3 = QPushButton("get selection")
         testButton3.clicked.connect(self.getSelected)
-        
+
         testButton2 = QPushButton("Add channel data")
         self.connect(testButton2,SIGNAL("clicked()"),self.addChannel)
-        
+
         # Get plot names
         getPlotsButton = QPushButton("Get Plot names")
         self.connect(getPlotsButton,SIGNAL("clicked()"),self.updatePlotNames)
-        
+
         self.plotNamesCombo = QComboBox()
-        
+
         self.console = sqt.MiniConsole(commands={'getData':self.getData,'addChannel':self.addChannel,
                                                  'getSelected':self.getSelected})
         self.tbmodel = sqt.TableArray([['1','2','3','4','5'],
                                        ['a','b','c','d','e']])
         #print(self.tbmodel._data)
         self.tb = sqt.Table(self,self.tbmodel)
-        
-        
+
+
         # Add to layout
         self.position([[testButton1],[testButton2],[testButton3],[getPlotsButton],[self.console],[self.tb]])
-        
-        
-        
+
+
+
         # Check preferences
         # =====================
         if self.preferences is None:
             print("Test Panel: has no preferences")
         else:
             print("Test Panel: Preferences are here")
-        
-        
+
+
 
     # User defined functions go here
     # ==============================================
@@ -135,28 +134,28 @@ class TestPanel(sqt.SimpleBase):
     def updatePlotNames(self):
         """
         Test getting the plot names from the tab
-        
+
         """
-        
+
         plotNames = self.getAllPlotsOnTab()
-        
+
         self.plotNamesCombo.addItems(plotNames)
-        
+
 
     def getSelected(self,*args):
         print(self.tb.getSelection())
         return (None,'$'+args[0],self.tb.getSelection())
     def addChannel(self,*args):
-        
+
         # Make a numpy recarray
         # ---------------------------
         dtype = [("x data",float),("y data",float)]
-        
+
         name = "From Test panel"
         recarray = np.zeros(200,dtype)
         recarray["x data"] = np.linspace(-10,11,200)
         recarray["y data"] = 5*np.random.rand(200) + 3*recarray["x data"]
-        
+
         # Make a new channel
         self.API.addChannelData((name,recarray))
 
@@ -164,23 +163,23 @@ class TestPanel(sqt.SimpleBase):
         # Make a numpy recarray
         # ---------------------------
         dtype = [("x data",float),("y data",float)]
-        
+
         name = "From Test panel"
         recarray = np.zeros(200,dtype)
         recarray["x data"] = np.linspace(-10,11,200)
         recarray["y data"] = 5*np.random.rand(200) + 3*recarray["x data"]
 
         return ('Added data to $%s' % var,'$'+var,recarray)
-        
-        
+
+
     def setFkeys(self):
-        
+
         self.Fkeys = [
                      ['F4','Select',self.selectFunction],
                      ['F6','Process',self.processFunction],
                      ['F9','Make Plot',self.makePlotFunction],
                      ]
-        
+
     def echo(self,item):
         print(item)
         return item
@@ -194,8 +193,8 @@ class TestPanel(sqt.SimpleBase):
 
 
 
-        
-        
+
+
 
 #==============================================================================
 #%% Functions

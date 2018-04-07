@@ -1,8 +1,7 @@
 #=============================================================================
 #%% Color Picker
 #=============================================================================
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from qt_imports import *
 import os
 
 class colorpicker(QWidget):
@@ -23,7 +22,7 @@ colorpicker.b>
 are how you get colors from the widget.
 """
     def __init__(self):
-        
+
         super(colorpicker,self).__init__()
         hl = QHBoxLayout()
         self.stack = QStackedWidget()
@@ -35,7 +34,7 @@ are how you get colors from the widget.
         self.selectorstart()
         self.paletteSelector()
         self.stack.setCurrentIndex(0)
-        
+
 
     def selectorstart(self):
         l = QVBoxLayout()
@@ -100,7 +99,7 @@ are how you get colors from the widget.
         nl.addWidget(self.gspin)
         nl.addWidget(self.bspin)
         nl.addWidget(self.namebox)
-        
+
         #************************
         labl = QVBoxLayout()
         rl = QLabel('Red:')
@@ -120,7 +119,7 @@ are how you get colors from the widget.
         ml.addLayout(labl)
         ml.addLayout(l)
         ml.addLayout(nl)
-        
+
         w = QWidget(self)
         w.setLayout(ml)
         self.stack.addWidget(w)
@@ -143,7 +142,7 @@ are how you get colors from the widget.
             rcolor = QColor(c,g,b)
             #color.setNamedColor('#ff00ff')
             brush = QBrush(rcolor,Qt.SolidPattern)
-            
+
             rec = self.rline.addRect(x,y,w,h,rcolor,brush)
             x += 5
             c+=7
@@ -153,7 +152,7 @@ are how you get colors from the widget.
             gcolor = QColor(r,c,b)
             #color.setNamedColor('#ff00ff')
             brush = QBrush(gcolor,Qt.SolidPattern)
-            
+
             rec = self.gline.addRect(x,y,w,h,gcolor,brush)
             x += 5
             c+=7
@@ -163,17 +162,17 @@ are how you get colors from the widget.
             bcolor = QColor(r,g,c)
             #color.setNamedColor('#ff00ff')
             brush = QBrush(bcolor,Qt.SolidPattern)
-            
+
             rec = self.bline.addRect(x,y,w,h,bcolor,brush)
             x += 5
             c+=7
 
         mcolor = QColor(r,g,b)
         brush = QBrush(mcolor,Qt.SolidPattern)
-        
+
         self.incolor.addRect(0,0,50,50,mcolor,brush)
         self.name = mcolor.name()
-        
+
         self.namebox.setText(mcolor.name())
 
 
@@ -234,7 +233,7 @@ are how you get colors from the widget.
         c = 0
         for i in names:
             if i == "BasicColors":
-                
+
                 bcn = c
 
             if bcn != None:
@@ -278,7 +277,7 @@ are how you get colors from the widget.
         self.combo.clear()
         names = []
         print(self.palettes.PaletteDict)
-        
+
         for i in self.palettes.PaletteDict:
             names.append(i)
         print(names)
@@ -311,10 +310,10 @@ are how you get colors from the widget.
         rgbcolor = palette.getColor(colorname)
         color = rgb_to_hex(rgbcolor)
         self.setNamedColor(color)
-        
-        
 
-        
+
+
+
 
 def HTMLColorToRGB(colorstring):
     # from stack overflow
@@ -331,10 +330,10 @@ def HTMLColorToRGB(colorstring):
     for i in range(len(re)):
         re[i] = uniformLength(re[i])
     return re
-    
-    
-    
-    
+
+
+
+
 import pickle
 class Palette:
     """
@@ -409,8 +408,8 @@ class ScopePyPalettes:
             ex.addColor('White','#ffffff')
             ex.addColor('Black','#000000')
             ex.save(os.path.join(os.path.expanduser('~'),'.ScopePy','Palette-Bin','BasicColors'))
-            
-                                  
+
+
         #self.PaletteDict['Basic Colors']=ex
         for i in os.listdir(os.path.join(os.path.expanduser('~'),'.ScopePy','Palette-Bin')):
             ex = self.worker.load(os.path.join(os.path.expanduser('~'),'.ScopePy','Palette-Bin',i))
@@ -430,11 +429,11 @@ class ScopePyPalettes:
 
     def getPalette(self,name):
         return self.PaletteDict[name]
-        
-        
+
+
 def rgb_to_hex(rgb):
    return '#%02x%02x%02x' % rgb
-        
+
 """
 Basic Colors:
 Red:#ff0000
@@ -448,4 +447,3 @@ brown:#b16a2d
 black:#000000
 white:#ffffff
 """
-

@@ -1,11 +1,12 @@
 import sys, os,logging
 import traceback
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+from qt_imports import QtCore
+
 _locals = {}
 import sys
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+
+from qt_imports import *
+
 #import commands as com
 import ScopePy_API as api
 import re
@@ -67,23 +68,23 @@ logger.addHandler(con)
 
 #==============================================================================
 
-class Console(QtGui.QPlainTextEdit):
+class Console(QPlainTextEdit):
     def __init__(self, prompt='>>>: ', startup_message='', parent=None):
         super(Console,self).__init__()
         self.setWindowTitle("ScopeScript console")
-        QtGui.QPlainTextEdit.__init__(self, parent)
+        QPlainTextEdit.__init__(self, parent)
         self._locals = {}
         self.prompt = prompt
         self.history = []
         self.namespace = {}
         self.construct = []
         self.api = api.API()
-        
+
 
         self.setGeometry(50, 75, 600, 400)
-        self.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
+        self.setWordWrapMode(QTextOption.WrapAnywhere)
         self.setUndoRedoEnabled(False)
-        self.document().setDefaultFont(QtGui.QFont("monospace", 10, QtGui.QFont.Normal))
+        self.document().setDefaultFont(QFont("monospace", 10, QFont.Normal))
         self.showMessage(startup_message)
         self.newPrompt()
 
@@ -100,7 +101,7 @@ class Console(QtGui.QPlainTextEdit):
         else:
             prompt = self.prompt
         self.appendPlainText(prompt)
-        self.moveCursor(QtGui.QTextCursor.End)
+        self.moveCursor(QTextCursor.End)
 
     def getCommand(self):
         doc = self.document()
@@ -112,13 +113,13 @@ class Console(QtGui.QPlainTextEdit):
     def setCommand(self, command):
         if self.getCommand() == command:
             return
-        self.moveCursor(QtGui.QTextCursor.End)
-        self.moveCursor(QtGui.QTextCursor.StartOfLine, QtGui.QTextCursor.KeepAnchor)
+        self.moveCursor(QTextCursor.End)
+        self.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         for i in range(len(self.prompt)):
-            self.moveCursor(QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor)
+            self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
         self.textCursor().removeSelectedText()
         self.textCursor().insertText(command)
-        self.moveCursor(QtGui.QTextCursor.End)
+        self.moveCursor(QTextCursor.End)
 
     def getConstruct(self, command):
         if self.construct:
@@ -166,14 +167,14 @@ class Console(QtGui.QPlainTextEdit):
         return self.textCursor().columnNumber() - len(self.prompt)
 
     def setCursorPosition(self, position):
-        self.moveCursor(QtGui.QTextCursor.StartOfLine)
+        self.moveCursor(QTextCursor.StartOfLine)
         for i in range(len(self.prompt) + position):
-            self.moveCursor(QtGui.QTextCursor.Right)
+            self.moveCursor(QTextCursor.Right)
 
 #    def runCommand(self):
 #        self.setWindowTitle("*python qt console*")
-#        
-#        
+#
+#
 #        command = self.getCommand()
 #        self.addToHistory(command)
 #
@@ -189,24 +190,24 @@ class Console(QtGui.QPlainTextEdit):
 #
 #                def write(self, text):
 #                    if not self.skip:
-#                        
+#
 #                        stripped_text = text.rstrip('\n')
-#                        
+#
 #                        self.write_func(stripped_text)
-#                        
-#                        QtCore.QCoreApplication.processEvents()
+#
+#                        QCoreApplication.processEvents()
 #                    self.skip = not self.skip
 #
 #            sys.stdout = stdoutProxy(self.appendPlainText)
-#            
+#
 #            try:
 #                try:
 #                    result = eval(command,globals(),self._locals)
-#                    
+#
 #                    if result != None:
 #                        self.appendPlainText(repr(result))
 #                except SyntaxError:
-#                    
+#
 #                    exec(command,globals(),self._locals)
 #            except SystemExit:
 #                self.close()
@@ -215,18 +216,18 @@ class Console(QtGui.QPlainTextEdit):
 #                # Remove traceback mentioning this file, and a linebreak
 #                for i in (3,2,1,-1):
 #                    traceback_lines.pop(i)
-#                    
+#
 #                self.appendPlainText('\n'.join(traceback_lines))
-#                
+#
 #            sys.stdout = tmp_stdout
 #        self.newPrompt()
 #        self.setWindowTitle("python qt console")
-        
+
     def scopeconnect(self):
         #coms = com.commands.commands
         self.setWindowTitle("*ScopeScript console*")
-        
-        
+
+
         command = self.getCommand()
         self.addToHistory(command)
         if command == '':
@@ -245,14 +246,14 @@ class Console(QtGui.QPlainTextEdit):
                 comm = agr[0]
                 #args = agr[1]
                 arg = args[0].split(",")
-                
+
                 logger.debug("args = %s" % args)
-                
+
                 if arg:
                     logger.debug("Argument list is not None")
                 else:
                     logger.debug("Argument list is none")
-        
+
                 self.showMessage("Sending Data To ScopePy... ")
                 # --- connect to scopepy here! ---
                 ok,error = self.api.sendCommand(comm,arg)
@@ -260,10 +261,10 @@ class Console(QtGui.QPlainTextEdit):
                     self.showMessage("Error From ScopePy: %s" % error)
                 else:
                     self.showMessage("ScopyPy liked your command.")
-            
-                    
-            
-                    
+
+
+
+
             except Exception as ec:
                 self.showMessage("ConsoleError: Check your Command.")
                 print(ec)
@@ -273,38 +274,38 @@ class Console(QtGui.QPlainTextEdit):
             self.setWindowTitle("ScopeScript console")
 
     def keyPressEvent(self, event):
-        if event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):
+        if event.key() in (Qt.Key_Enter, Qt.Key_Return):
             self.scopeconnect()
             #self.runCommand()
             return
-        if event.key() == QtCore.Qt.Key_Home:
-            
+        if event.key() == Qt.Key_Home:
+
             self.setCursorPosition(0)
             return
-        if event.key() == QtCore.Qt.Key_PageUp:
-            
+        if event.key() == Qt.Key_PageUp:
+
             return
-        elif event.key() in (QtCore.Qt.Key_Left, QtCore.Qt.Key_Backspace):
-            
+        elif event.key() in (Qt.Key_Left, Qt.Key_Backspace):
+
             if self.getCursorPosition() == 0:
-                
+
                 return
-        elif event.key() == QtCore.Qt.Key_Up:
-            
+        elif event.key() == Qt.Key_Up:
+
             self.setCommand(self.getPrevHistoryEntry())
-            
+
             return
-        elif event.key() == QtCore.Qt.Key_Down:
-            
+        elif event.key() == Qt.Key_Down:
+
             self.setCommand(self.getNextHistoryEntry())
-            
+
             return
-        elif event.key() == QtCore.Qt.Key_D and event.modifiers() == QtCore.Qt.ControlModifier:
-            
+        elif event.key() == Qt.Key_D and event.modifiers() == Qt.ControlModifier:
+
             self.close()
-            
-            
-        
+
+
+
         super(Console, self).keyPressEvent(event)
     def commands(self):
         self.showMessage("""
@@ -323,10 +324,10 @@ class Console(QtGui.QPlainTextEdit):
         setCursorPosition()
         runCommand()
         KeyPressEvent()
-        kill()        
-        
+        kill()
+
         This is the help for are special commands""")
-        
+
     def kill(self):
         self.setCommand("quit()")
         self.runCommand()
@@ -336,15 +337,15 @@ welcome_message = '''
    ---------------------------------------------------------------
 '''
 def fake_input(prompt):
-    text, ok = QtGui.QInputDialog.getText(console, prompt, 
+    text, ok = QInputDialog.getText(console, prompt,
                 prompt)
-                
+
     return text
-    
+
 def runfile(filename):
     exec(open(filename).read(),globals(),console._locals)
 if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     console = Console(startup_message=welcome_message)
     #console.updateNamespace({'application' : app, 'anum' : 1234})
     #console.setWindowTitle("python qt console")

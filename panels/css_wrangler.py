@@ -50,8 +50,7 @@ import re
 # Third party libraries
 import numpy as np
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qt_imports import *
 
 # My libraries
 import ScopePy_panels as panel
@@ -71,73 +70,73 @@ import simpleQt as sqt
 class TestPanel(sqt.SimpleBase):
     """
     Test panel for ScopePy
-    
+
     No __init__() required as it must be the same as the base class
     Must reimplement the drawPanel() method
-    
+
     """
-    
+
     def drawPanel(self):
         """
         Draw the GUI elements of the panel
-        
+
         This is a Mandatory function. It will be called by ScopePy when
         the panel is added to a tab.
-        
+
         """
-        
+
         # Load CSS file for current theme
         # ====================================
         #filename = os.path.join(self.API.basepath,"ScopePy_styles.css")
 
-        filename = self.API.getThemePath(self.API.preferences.theme)        
-        
+        filename = self.API.getThemePath(self.API.preferences.theme)
+
         with open(filename, "r") as f:
             self.default_stylesheet = f.read()
-            
-    
+
+
         # Store current path
         path,css_file = os.path.split(filename)
         self.currentPath = path
-        
-        
-        
+
+
+
         # Make the widgets
         # ==================================
-        
+
         self.themeName = QLabel(filename)
         self.cssEdit = QPlainTextEdit()
         self.cssEdit.setMinimumSize(700,500)
         self.cssEdit.setPlainText(self.default_stylesheet)
-        
+
         # Find and replace
         self.findLineEdit = QLineEdit()
         self.replaceLineEdit = QLineEdit()
         replaceAllButton = QPushButton('Replace all')
-        
+
         self.connect(self.findLineEdit,SIGNAL("returnPressed()"),self.findButton_clicked)
-        
-        
+
+
         # Colour selector widget
         self.colourPicker = wid.colorpicker()
-        
+
         # Example buttons
         self.updateButton = QPushButton("&Update")
         defaultButton = QPushButton("Set back to default")
         dumpButton = QPushButton("Dump CSS")
         saveButton = QPushButton("Sa&ve CSS")
         openButton = QPushButton("&Open CSS")
-        
+
         self.connect(self.updateButton,SIGNAL("clicked()"),self.changeColour)
         self.connect(defaultButton,SIGNAL("clicked()"),self.setDefault)
         self.connect(dumpButton,SIGNAL("clicked()"),self.dumpCSS)
         self.connect(saveButton,SIGNAL("clicked()"),self.saveCSS)
         self.connect(openButton,SIGNAL("clicked()"),self.openCSS)
-        
-        
+
+
         # Panel layout code goes here
         # =============================
-     
+
         self.position(
             [
             [self.themeName,self.updateButton],
@@ -148,164 +147,164 @@ class TestPanel(sqt.SimpleBase):
             [defaultButton,dumpButton],
             [openButton,saveButton]
             ])
-        
-        
-        
-        
+
+
+
+
         # Add layout to master widget [Mandatory]
         # ========================================
         # mandatory
         #self.setLayout(panelLayout)
-        
+
         # Check preferences
         # =====================
         if self.preferences is None:
             print("Test Panel: has no preferences")
         else:
             print("Test Panel: Preferences are here")
-        
-        
+
+
     def setFkeys(self):
-        
+
         self.Fkeys = [
                      ['F8','Find',self.focus_find],
                      ]
-        
+
 
     # User defined functions go here
     # ==============================================
 
     def changeColour(self):
-        
+
         # Get text
         css = self.cssEdit.document().toPlainText()
-        
+
         self.API.setThemeStyleSheet(css)
-        
-    
-    
+
+
+
     def dumpCSS(self):
-        
+
         # Get text
         css = self.cssEdit.document().toPlainText()
 
         print("\nCSS dump")
         print("*"*70)
-        print(css)        
+        print(css)
         print("*"*70)
-        
-    
+
+
     def setDefault(self):
         self.cssEdit.setPlainText(self.default_stylesheet)
-        
-        
-    
+
+
+
     def saveCSS(self):
         """
         Save CSS file
-        
+
         """
-        
+
         path = self.currentPath
-        
+
         formatString = "CSS files (*.css)"
         pathAndFilename = QFileDialog.getSaveFileName(self,"Save CSS to file",
                                                path,formatString)
-                                               
 
-        
+
+
         if not pathAndFilename:
             return
-            
+
         # Get CSS
         css = self.cssEdit.document().toPlainText()
-        
+
         with open(pathAndFilename,'w') as file:
             file.write(css)
-        
+
         # Update current path
         path, filename = os.path.split(pathAndFilename)
         self.currentPath = path
-        
+
         self.themeName.setText(pathAndFilename)
-        
-        
+
+
     def openCSS(self):
         """
         Open CSS file
-        
+
         """
-        
+
         path = self.currentPath
-        
+
         formatString = "CSS files (*.css)"
         pathAndFilename = QFileDialog.getOpenFileName(self,"Open CSS file",
                                                path,formatString)
 
-        
+
         if not pathAndFilename:
             return
-            
+
         # Get CSS
-        
-        
+
+
         with open(pathAndFilename,'r') as file:
             css = file.read()
-            
+
         self.cssEdit.setPlainText(css)
-        
+
         # Update current path
         path, filename = os.path.split(pathAndFilename)
         self.currentPath = path
-        
+
         self.themeName.setText(pathAndFilename)
-        
+
         # Update colours
         self.changeColour()
-        
-        
+
+
     # ------------------------------------------------------------------------
     # Find and replace
     # ------------------------------------------------------------------------
     def focus_find(self):
         self.findLineEdit.setFocus()
-        
-        
+
+
     @property
     def __text(self):
         return self.cssEdit.document().toPlainText()
-        
+
     @__text.setter
     def __text(self,text):
         self.cssEdit.setPlainText(text)
-        
-        
+
+
     def makeRegex(self):
-        findText = self.findLineEdit.text()      
+        findText = self.findLineEdit.text()
         return re.compile(findText, flags)
 
 
-    
+
     def findButton_clicked(self):
         self.cssEdit.moveCursor(QTextCursor.Start)
-        findText = self.findLineEdit.text()  
+        findText = self.findLineEdit.text()
         self.cssEdit.find(findText)
         self.cssEdit.setFocus()
-        
-        
-    
+
+
+
     def replaceButton_clicked(self):
         regex = self.makeRegex()
         self.__text = regex.sub(self.replaceLineEdit.text(),
                                 self.__text, 1)
-        
 
-    
+
+
     def replaceAllButton_clicked(self):
         regex = self.makeRegex()
         self.__text = regex.sub(self.replaceLineEdit.text(),
                                 self.__text)
-    
+
 
 
 

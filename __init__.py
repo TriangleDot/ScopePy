@@ -2,7 +2,7 @@
 """
 Scope Py
 -----------
-QT4 based plotting tool modelled on a digital oscilloscope
+QT based plotting tool modelled on a digital oscilloscope
 
 Features
 ------------
@@ -29,4 +29,3 @@ TODO list
 * CSV import
 
 """
-

@@ -1,24 +1,23 @@
 import ScopePy_panels as panels
 import simpleQt as sqt
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtSvg import *
+from qt_imports import *
+from qt_extra.QtSvg import *
 import os
 def getext(filename):
     return filename.split('.')[1]
 class NotesClient(object):
-    
+
     def __init__(self,API,note_name):
         self.panel = API.panelID(note_name)
         self.API = API
-        
+
 
     def sendList(self,listofstr,list_type='o'):
         """
 list_type: o = Numbered List
     u = Bulletin :ist
     """
-        
+
         tosend = '<%sl>' % list_type
         for i in listofstr:
             tosend += '<li>%s</li>' % i
@@ -63,9 +62,9 @@ list_type: o = Numbered List
     def sendcolor(self,text,color):
         self.send('<font color="%(color)s">%(message)s</font>' % {'color':color,'message':text})
 
-    
-        
-        
+
+
+
 
     def send(self,text,atend=''):
         self.API.sendComms('NotesAPIText',self.panel,text+atend)
@@ -75,7 +74,7 @@ list_type: o = Numbered List
 
     def load(self,filename):
         self.API.sendComms('NotesAPILoad',self.panel,filename)
-        
+
 class Panel(sqt.SimpleBase):
     def drawPanel(self):
         self.isSaveable = True
@@ -92,8 +91,8 @@ class Panel(sqt.SimpleBase):
 
     def handleInsert(self,text):
         self.text.insertHtml(text)
-    
-    
+
+
     def saveData(self):
         print('Saving Data')
         data = self.standardSaveData
@@ -201,9 +200,9 @@ class Panel(sqt.SimpleBase):
     def setFkeys(self):
         self.Fkeys = [
                      ['F4','Italics',self.italic],
-                     
+
                      ['F6','Underline',self.underline],
-                     
+
                      ['F5','Numbered List',self.numberList],
                      ['F8','Super Script',self.superScript],
                      ['F9','Sub Script',self.subScript],
@@ -221,7 +220,7 @@ class Panel(sqt.SimpleBase):
         #print( ';;'.join(['Notes/HTML files (*.note,*.html)','Test File (*.*)']))
         filename =QFileDialog.getSaveFileName(self,'Save File',os.path.join(self.API.filePath,'UntitledNote.note'),
                                                         ';;'.join(['Notes/HTML files (*.note *.html)','Test File (*.*)']))
-        
+
         worked = filename != ''
         if worked:
             self.baseSave(filename)
@@ -237,7 +236,7 @@ class Panel(sqt.SimpleBase):
                     f.write(self.text.toPlainText())
 
     def openFile(self):
-            
+
         filename = QFileDialog.getOpenFileName(self,'Open File',os.path.join(self.API.filePath,'UntitledNote.note'),
                                        ';;'.join(['Notes/HTML files (*.note *.html)','Test File (*.*)']))
 
@@ -251,12 +250,12 @@ class Panel(sqt.SimpleBase):
             #print(ext)
             with open(filename,'r') as f:
                 txt = f.read()
-            
+
             if ext == 'note' or ext == 'html':
                 self.text.setHtml(txt)
             else:
                 self.text.setText(txt)
-                
+
 
     def getplot(self):
         panels = self.API.getAllPanels(False)
@@ -270,9 +269,9 @@ class Panel(sqt.SimpleBase):
             selected = d.selected
             s = selected[0]
             self.plottosvg(self.API.getPanel(s).plot.scene)
-                      
-        
-        
+
+
+
     def plottosvg(self,plotscene):
 ##    QSvgGenerator svgGen;
 ##
@@ -304,7 +303,7 @@ class viewList(QDialog):
         layout = QVBoxLayout(self)
         ok = QPushButton('Ok',self)
         ok.clicked.connect(self.ok)
-        
+
         cancel = QPushButton('Cancel',self)
         cancel.clicked.connect(self.cancel)
         self.list = QListWidget(self)
@@ -314,17 +313,17 @@ class viewList(QDialog):
         self.setLayout(layout)
         self.list.addItems(items)
         #self.show()
-        
 
-    
-        
+
+
+
 
     def ok(self):
         selection = self.list.selectedItems()
         self.selected = [i.text() for i in selection]
         self.accept()
-        
+
     def cancel(self):
         self.reject()
-        
+
 __panels__ ={'Notes':panels.PanelFlags(Panel)}
